@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+
 
 // ── All your credentials ──────────────────────────────────────
 const CONFIG = {
@@ -423,4 +423,20 @@ async function runSync() {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 }
 
-runSync().catch(console.error);
+export default async function handler(req, res) {
+  try {
+    await runSync();
+
+    return res.status(200).json({
+      success: true,
+      message: "Stock sync completed"
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+}
